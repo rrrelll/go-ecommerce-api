@@ -1,0 +1,1 @@
+PROJECT Clean Architecture + Fiber + MySQL + JWT. BY AI CHAT GPT
