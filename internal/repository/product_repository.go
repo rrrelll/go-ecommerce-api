@@ -47,3 +47,23 @@ func (r *ProductRepository) GetWithPagination(page int, limit int, search string
 
 	return products, total, err
 }
+
+//UPDATE & DELETE
+
+func (r *ProductRepository) FindByID(id int) (*model.Product, error) {
+
+	var product model.Product
+
+	err := r.DB.First(&product, id).Error
+
+	return &product, err
+}
+
+func (r *ProductRepository) Update(product *model.Product) error {
+	return r.DB.Save(product).Error
+}
+
+func (r *ProductRepository) Delete(id int) error {
+
+	return r.DB.Delete(&model.Product{}, id).Error
+}

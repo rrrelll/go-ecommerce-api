@@ -36,6 +36,7 @@ func JWTProtected() fiber.Handler {
 		claims := token.Claims.(jwt.MapClaims)
 
 		c.Locals("user_id", claims["user_id"])
+		c.Locals("role", claims["role"])
 
 		return c.Next()
 	}

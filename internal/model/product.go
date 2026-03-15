@@ -1,8 +1,10 @@
 package model
 
 type Product struct {
-	ID    uint   `gorm:"primaryKey"`
-	Name  string
-	Price int
-	Stock int
+	ID         uint `gorm:"primaryKey"`
+	Name       string
+	Price      int
+	Stock      int
+	UserID     uint
+	CategoryID uint
 }

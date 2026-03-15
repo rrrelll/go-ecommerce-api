@@ -22,6 +22,7 @@ func (s *AuthService) Register(name, email, password string) error {
 		Name:     name,
 		Email:    email,
 		Password: hash,
+		Role:     "buyer",
 	}
 
 	return s.UserRepo.Create(&user)
@@ -41,7 +42,7 @@ func (s *AuthService) Login(email, password string) (string, error) {
 		return "", err
 	}
 
-	token, _ := utils.GenerateJWT(user.ID)
+	token, _ := utils.GenerateJWT(user.ID, user.Role)
 
 	return token, nil
 }

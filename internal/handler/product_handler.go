@@ -1,7 +1,12 @@
 package handler
 
 import (
+	"strconv"
+
+	"go-ecommerce-api/internal/dto"
 	"go-ecommerce-api/internal/service"
+	"go-ecommerce-api/internal/validation"
+	"go-ecommerce-api/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -23,12 +28,10 @@ func (h *ProductHandler) GetProducts(c *fiber.Ctx) error {
 	products, total, err := h.Service.GetProducts(page, limit, search)
 
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return utils.Error(c, err.Error())
 	}
 
-	return c.JSON(fiber.Map{
+	return utils.Success(c, "success", fiber.Map{
 		"page":  page,
 		"limit": limit,
 		"total": total,
@@ -38,29 +41,63 @@ func (h *ProductHandler) GetProducts(c *fiber.Ctx) error {
 
 func (h *ProductHandler) CreateProduct(c *fiber.Ctx) error {
 
-	type Request struct {
-		Name  string `json:"name"`
-		Price int    `json:"price"`
-		Stock int    `json:"stock"`
-	}
-
-	var req Request
+	var req dto.CreateProductRequest
 
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"error": "Invalid request body",
-		})
+		return utils.Error(c, "invalid request body")
 	}
 
-	err := h.Service.CreateProduct(req.Name, req.Price, req.Stock)
+	if err := validation.Validate.Struct(req); err != nil {
+		return utils.Error(c, err.Error())
+	}
+
+	userID := uint(c.Locals("user_id").(float64))
+
+	err := h.Service.CreateProduct(req, userID)
 
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return utils.Error(c, err.Error())
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "product created",
-	})
+	return utils.Success(c, "product created", nil)
+}
+
+func (h *ProductHandler) UpdateProduct(c *fiber.Ctx) error {
+
+	id, _ := strconv.Atoi(c.Params("id"))
+
+	var req dto.UpdateProductRequest
+
+	if err := c.BodyParser(&req); err != nil {
+		return utils.Error(c, "invalid request")
+	}
+
+	if err := validation.Validate.Struct(req); err != nil {
+		return utils.Error(c, err.Error())
+	}
+
+	userID := uint(c.Locals("user_id").(float64))
+
+	err := h.Service.UpdateProduct(id, req, userID)
+
+	if err != nil {
+		return utils.Error(c, err.Error())
+	}
+
+	return utils.Success(c, "product updated", nil)
+}
+
+func (h *ProductHandler) DeleteProduct(c *fiber.Ctx) error {
+
+	id, _ := strconv.Atoi(c.Params("id"))
+
+	userID := uint(c.Locals("user_id").(float64))
+
+	err := h.Service.DeleteProduct(id, userID)
+
+	if err != nil {
+		return utils.Error(c, err.Error())
+	}
+
+	return utils.Success(c, "product deleted", nil)
 }
