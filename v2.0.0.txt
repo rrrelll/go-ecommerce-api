@@ -1,0 +1,64 @@
+## Progress Update - Ecommerce API (Fiber + JWT)
+
+### Features Implemented
+
+Authentication
+- Register user
+- Login with JWT authentication
+- Password hashing using bcrypt
+
+Authorization
+- Added role system (buyer / seller)
+- Implemented role-based middleware
+- Restrict product creation to seller role only
+
+Product Management
+- Create product
+- Get product list
+- Update product
+- Delete product
+- Pagination support
+- Search product feature
+
+Category Management
+- Create category
+- Get category list
+
+Validation
+- Request validation using go-playground validator
+
+Response Standardization
+- Implement consistent API response format
+
+Database
+- Added user role column
+- Added product relation to category and user
+
+### API Endpoints
+
+Auth
+POST /register
+POST /login
+
+Profile
+GET /profile
+
+Products
+GET /products
+POST /products
+PUT /products/:id
+DELETE /products/:id
+
+Categories
+GET /categories
+POST /categories
+
+### Tech Stack
+- Golang
+- Fiber Framework
+- MySQL
+- GORM
+- JWT Authentication
+
+### Notes
+Product creation is restricted to users with `seller` role.
