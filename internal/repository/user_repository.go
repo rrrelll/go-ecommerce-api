@@ -2,7 +2,9 @@ package repository
 
 import (
 	"go-ecommerce-api/internal/model"
+	"go-ecommerce-api/pkg/logger"
 
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -34,6 +36,12 @@ func (r *UserRepository) FindByID(id uint) (*model.User, error) {
 	err := r.DB.First(&user, id).Error
 
 	if err != nil {
+
+		//Logging FindByID
+		logger.Log.Error("Database Error!",
+			zap.Error(err),
+		)
+
 		return nil, err
 	}
 

@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"go-ecommerce-api/config"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var SECRET = []byte("secret")
+var SECRET = []byte(config.GetEnv("secret"))
 
 func GenerateJWT(userID uint, role string) (string, error) {
 

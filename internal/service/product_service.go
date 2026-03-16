@@ -5,6 +5,9 @@ import (
 	"go-ecommerce-api/internal/dto"
 	"go-ecommerce-api/internal/model"
 	"go-ecommerce-api/internal/repository"
+	"go-ecommerce-api/pkg/logger"
+
+	"go.uber.org/zap"
 )
 
 type ProductService struct {
@@ -43,6 +46,10 @@ func (s *ProductService) UpdateProduct(id int, req dto.UpdateProductRequest, Use
 
 	if product.UserID != UserID {
 
+		logger.Log.Error("user not product owner",
+			zap.Uint("user_id", UserID),
+			zap.Int("product_id", id),
+		)
 		return errors.New("not product owner")
 	}
 
@@ -63,6 +70,12 @@ func (s *ProductService) DeleteProduct(id int, UserID uint) error {
 	}
 
 	if product.UserID != UserID {
+
+		logger.Log.Error("user not product owner",
+			zap.Uint("user_id", UserID),
+			zap.Int("product_id", id),
+		)
+
 		return errors.New("not product owner")
 	}
 
