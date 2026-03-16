@@ -1,0 +1,31 @@
+## Backend Progress Report — Logging, Config, Migration, Testing
+
+### 🚀 New Features
+
+* Implemented **request logging middleware** using Zap logger
+* Added **environment configuration** with `.env` support
+* Implemented **database auto migration** using GORM
+* Added **basic unit tests** for service layer
+
+### 🛠 Improvements
+
+* Centralized configuration loading
+* Added structured JSON logging for HTTP requests
+* Improved application initialization flow in `main.go`
+
+### 🧪 Testing
+
+* Verified logging output through Postman requests
+* Tested environment variable loading
+* Verified migration behavior with database schema changes
+* Executed unit tests for service layer logic
+
+### 📌 Notes
+
+Logging now captures:
+
+* HTTP method
+* request path
+* response status
+
+This prepares the backend for better debugging and production observability.
